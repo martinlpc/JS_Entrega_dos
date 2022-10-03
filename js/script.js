@@ -1,3 +1,14 @@
+/*  ENTREGA #2 - JAVASCRIPT - COMISION #41810
+
+    SIMULAMOS UN STORE DE FOTOGRAFÍAS DE STOCK ESTILO SHUTTERSTOCK / ADOBE 
+    Y DE PRESETS PARA EDITORES DE FOTOGRAFÍA Y VIDEO, YA QUE MI PROYECTO DE DW
+    SE TRATA DE UNA WEB DE SERVICIOS DE FOTOGRAFÍA, VIDEO Y COBERTURA DE EVENTOS  */
+
+/*  1) ACCESO CON CONTRASEÑA ÚNICAMENTE, CON 3 INTENTOS PERMITIDOS POR SEGURIDAD
+    2) SE MUESTRA EL CONTENIDO DEL STORE
+    3) SE EJECUTA UN WHILE MIENTRAS EL USUARIO DESEE SUMAR ITEMS AL CARRITO (CART)
+    4) CUANDO EL USUARIO DESEE PASAR A LA COMPRA, SALIMOS DEL WHILE Y MOSTRAMOS EL CART */
+
 const cart = [];
 const arrStore = [];
 class Item {
@@ -25,46 +36,61 @@ function llenarStore() {
     arrStore.push((item3 = new Item(200, "preset", "LUT1", 260)));
     arrStore.push((item4 = new Item(201, "preset", "LUT2", 260)));
     arrStore.push((item5 = new Item(102, "photo", "Coworking 1", 375)));
-    console.log(arrStore);
 }
 
-function crearStringItemStore(array) {
+function crearStringItem(array) {
+    // Con esta funcion creamos el string para mostrar el store en un alert/prompt
     let info = "";
-    array.array.forEach((element) => {
+    array.forEach((element) => {
         info += "ID: " + element.id + "\nNombre: " + element.desc + "\nCategoría: " + element.categ + "\nPrecio: " + element.precioUnit + "\n-------\n\n";
     });
     return info;
 }
 
-llenarStore();
+//Simulamos un login de usuario registrado únicamente pidiendo su password
+let loginOk = false;
 let inputPass = prompt("PHOTO STORE\n\nIngrese su contraseña para acceder al store:");
-let opcionSel;
-if (userLogin(inputPass)) {
+console.log(">> pass ingresado: " + inputPass);
+for (let i = 2; i > 0; i--) {
+    if (userLogin(inputPass)) {
+        loginOk = true;
+        break;
+    } else {
+        inputPass = prompt("La contraseña no es válida. Ingrese su contraseña:");
+    }
+}
+if (loginOk) {
+    // ENTRANDO AL STORE
+    // Llenamos el store con productos hardcodeados para simular ingresos al carrito de compra
+    llenarStore();
+    alert("BIENVENIDO/A A PHOTOSTORE!\n\nA continuación, siga las instrucciones en pantalla para efectuar su compra.");
+    let stringStore = crearStringItem(arrStore);
+    let input;
     do {
-        let salir = false;
-        opcionSel = prompt("PHOTO STORE\n" + "\n" + "Ingrese el número de la opción deseada:\n" + "1 - Ver carrito (checkout)\n2 - Explorar store\nX - Salir");
-        opcionSel = opcionSel.toUpperCase();
-        switch (opcionSel) {
-            case "X":
-                // El usuario quiere salir
-                salir = true;
-                break;
-            case 1:
-                // Ver el carrito
-                break;
-            case 2:
-                // Ver store
-                stringStore = crearStringItemStore(arrStore);
-                input = prompt("Ingrese el id del producto que desee agregar al carrito:\n\n" + stringStore);
-
-                break;
-            default:
-                break;
+        input = prompt("Ingrese el id del producto que desee agregar al carrito o ingrese X para continuar con la compra:\n\n" + stringStore);
+        input = input.toUpperCase();
+        if (!isNaN(input)) {
+            // Primero chequeamos que el item seleccionado exista en el array de store
+            let itemBuscado = arrStore.find((element) => element.id == parseInt(input));
+            if (itemBuscado == undefined) {
+                alert("El id ingresado no se encuentra en el store.");
+            } else {
+                // Pusheamos/agreamos el item al final del array cart
+                cart.push(itemBuscado);
+                alert("Producto: [" + "(" + itemBuscado.id + ") " + itemBuscado.desc + "] agregado al carrito");
+            }
+        } else {
+            if (input != "X") {
+                alert("Ingresó un dato inválido. Por favor, ingrese el ID del producto deseado o X para continuar con la compra.");
+            }
         }
-    } while (opcionSel != 1 && opcionSel != 2 && opcionSel != "X");
-    if (salir) {
-        alert("Nos vemos!");
+    } while (input != "X");
+    // Cuando el usuario decide continuar para comprar:
+    stringStore = crearStringItem(cart);
+    alert("ITEMS EN EL CARRITO:\n\n" + stringStore);
+    for (const iterator of object) {
     }
 } else {
-    alert("Ingreso fallido. Intente nuevamente mas tarde.");
+    //Fin del programa por contraseña erronea 3 veces
+    alert("Ha ingresado una contraseña no válida 3 veces. Intente nuevamente mas tarde.");
 }
