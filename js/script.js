@@ -87,8 +87,27 @@ if (loginOk) {
     } while (input != "X");
     // Cuando el usuario decide continuar para comprar:
     stringStore = crearStringItem(cart);
-    alert("ITEMS EN EL CARRITO:\n\n" + stringStore);
-    for (const iterator of object) {
+    let importeTotal = 0;
+    for (const item of cart) {
+        importeTotal += parseFloat(item.precioUnit);
+    }
+    alert("ITEMS EN EL CARRITO:\n\n" + stringStore + "\nIMPORTE TOTAL: $ " + importeTotal);
+    input = "";
+    do {
+        input = prompt("¿Cómo desea pagar?\n\n1- Tarjeta de débito (0% recargo)\n2-Tarjeta de crédito (10% recargo)\nX- Cancelar compra y vaciar carrito");
+    } while (input != 1 && input != 2 && input != "X" && input != "x");
+
+    switch (input) {
+        case "1":
+            alert("Pago efectuado con tarjeta de débito\nTOTAL: $ " + importeTotal);
+            break;
+        case "2":
+            alert("Pago efectuado con tarjeta de crédito\nTOTAL: $ " + (importeTotal * 1.1).toFixed(2));
+            break;
+        case "X":
+        case "x":
+            alert("Compra cancelada");
+            break;
     }
 } else {
     //Fin del programa por contraseña erronea 3 veces
