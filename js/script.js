@@ -91,10 +91,10 @@ if (loginOk) {
     for (const item of cart) {
         importeTotal += parseFloat(item.precioUnit);
     }
-    alert("ITEMS EN EL CARRITO:\n\n" + stringStore + "\nIMPORTE TOTAL: $ " + importeTotal);
+    alert("ITEMS EN EL CARRITO:\n\n" + stringStore + "\nSUBTOTAL: $ " + importeTotal);
     input = "";
     do {
-        input = prompt("¿Cómo desea pagar?\n\n1- Tarjeta de débito (0% recargo)\n2-Tarjeta de crédito (10% recargo)\nX- Cancelar compra y vaciar carrito");
+        input = prompt("¿Cómo desea abonar?\n\n1- Tarjeta de débito (0% recargo)\n2- Tarjeta de crédito (10% recargo)\nX- Cancelar compra y vaciar carrito");
     } while (input != 1 && input != 2 && input != "X" && input != "x");
 
     switch (input) {
@@ -109,7 +109,8 @@ if (loginOk) {
             alert("Compra cancelada");
             break;
     }
+	// Fin del script por compra efectuada
 } else {
-    //Fin del programa por contraseña erronea 3 veces
+    // Fin del script por contraseña erronea 3 veces
     alert("Ha ingresado una contraseña no válida 3 veces. Intente nuevamente mas tarde.");
 }
